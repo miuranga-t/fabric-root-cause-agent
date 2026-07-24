@@ -22,3 +22,17 @@ def detect_missing_records(
             missing.append(record)
 
     return missing
+
+def detect_duplicates(self, records):
+
+    seen = []
+    duplicates = []
+
+    for record in records:
+
+        if record in seen and record not in duplicates:
+            duplicates.append(record)
+
+        seen.append(record)
+
+    return duplicates
