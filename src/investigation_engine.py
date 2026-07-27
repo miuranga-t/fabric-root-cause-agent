@@ -10,29 +10,53 @@ class InvestigationEngine:
             "difference": difference
         }
 
-def detect_missing_records(
-    self,
-    dashboard_records,
-    source_records
-):
-    missing = []
+    def detect_missing_records(
+        self,
+        dashboard_records,
+        source_records
+    ):
 
-    for record in source_records:
-        if record not in dashboard_records:
-            missing.append(record)
+        missing = []
 
-    return missing
+        for record in source_records:
+            if record not in dashboard_records:
+                missing.append(record)
 
-def detect_duplicates(self, records):
+        return missing
 
-    seen = []
-    duplicates = []
+    def detect_duplicates(self, records):
 
-    for record in records:
+        seen = []
+        duplicates = []
 
-        if record in seen and record not in duplicates:
-            duplicates.append(record)
+        for record in records:
 
-        seen.append(record)
+            if record in seen and record not in duplicates:
+                duplicates.append(record)
 
-    return duplicates
+            seen.append(record)
+
+        return duplicates
+
+    def generate_report(
+        self,
+        total_result,
+        missing_records,
+        duplicate_records
+    ):
+
+        report = f"""
+Investigation Report
+
+Dashboard Total : {total_result['dashboard_total']}
+Source Total    : {total_result['source_total']}
+Difference      : {total_result['difference']}
+
+Missing Records :
+{missing_records}
+
+Duplicate Records :
+{duplicate_records}
+"""
+
+        return report
