@@ -43,7 +43,16 @@ causes = engine.analyze_root_cause(
 print("Root Causes:")
 print(causes)
 
-# Report
+# Impact Analysis
+impact = engine.calculate_impact(
+    missing,
+    duplicates
+)
+
+print("Impact Analysis:")
+print(impact)
+
+# Investigation Report
 report = engine.generate_report(
     result,
     missing,

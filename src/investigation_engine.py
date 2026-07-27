@@ -38,29 +38,6 @@ class InvestigationEngine:
 
         return duplicates
 
-    def generate_report(
-        self,
-        total_result,
-        missing_records,
-        duplicate_records
-    ):
-
-        report = f"""
-Investigation Report
-
-Dashboard Total : {total_result['dashboard_total']}
-Source Total    : {total_result['source_total']}
-Difference      : {total_result['difference']}
-
-Missing Records :
-{missing_records}
-
-Duplicate Records :
-{duplicate_records}
-"""
-
-        return report
-
     def analyze_root_cause(
         self,
         missing_records,
@@ -85,3 +62,39 @@ Duplicate Records :
             )
 
         return causes
+
+    def calculate_impact(
+        self,
+        missing_records,
+        duplicate_records
+    ):
+
+        impact = {
+            "missing_count": len(missing_records),
+            "duplicate_count": len(duplicate_records)
+        }
+
+        return impact
+
+    def generate_report(
+        self,
+        total_result,
+        missing_records,
+        duplicate_records
+    ):
+
+        report = f"""
+Investigation Report
+
+Dashboard Total : {total_result['dashboard_total']}
+Source Total    : {total_result['source_total']}
+Difference      : {total_result['difference']}
+
+Missing Records :
+{missing_records}
+
+Duplicate Records :
+{duplicate_records}
+"""
+
+        return report
