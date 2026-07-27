@@ -70,11 +70,13 @@ confidence = engine.calculate_confidence_score(
 print("Confidence Score:")
 print(f"{confidence}%")
 
-# Investigation Report
+# Professional Investigation Report
 report = engine.generate_report(
     result,
-    missing,
-    duplicates
+    causes,
+    impact,
+    financial_impact,
+    confidence
 )
 
 print(report)

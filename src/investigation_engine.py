@@ -63,10 +63,20 @@ class InvestigationEngine:
         duplicate_records
     ):
 
-        impact = {
+        return {
             "missing_count": len(missing_records),
             "duplicate_count": len(duplicate_records)
         }
+
+    def calculate_financial_impact(
+        self,
+        source_df,
+        missing_records
+    ):
+
+        impact = source_df[
+            source_df["invoice_id"].isin(missing_records)
+        ]["amount"].sum()
 
         return impact
 
@@ -89,37 +99,43 @@ class InvestigationEngine:
 
         return score
 
-    def calculate_financial_impact(
-        self,
-        source_df,
-        missing_records
-    ):
-
-        impact = source_df[
-            source_df["invoice_id"].isin(missing_records)
-        ]["amount"].sum()
-
-        return impact
-
     def generate_report(
         self,
         total_result,
-        missing_records,
-        duplicate_records
+        causes,
+        impact,
+        financial_impact,
+        confidence
     ):
 
         report = f"""
-Investigation Report
+====================================
+INVESTIGATION REPORT
+====================================
 
-Dashboard Total : {total_result['dashboard_total']}
-Source Total    : {total_result['source_total']}
-Difference      : {total_result['difference']}
+Dashboard Total      : {total_result['dashboard_total']}
+Source Total         : {total_result['source_total']}
+Difference           : {total_result['difference']}
 
-Missing Records :
-{missing_records}
+Missing Count        : {impact['missing_count']}
+Duplicate Count      : {impact['duplicate_count']}
 
-Duplicate Records :
-{duplicate_records}
+Financial Impact     : {financial_impact}
+
+Root Causes:
+"""
+
+        for cause in causes:
+            report += f"\n- {cause}"
+
+        report += f"""
+
+Confidence Score     : {confidence}%
+
+Recommendation:
+Review missing invoices and duplicate transactions.
+
+====================================
 """
 
         return report
