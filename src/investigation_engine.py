@@ -41,21 +41,52 @@ class InvestigationEngine:
     def analyze_root_cause(
         self,
         missing_records,
-        duplicate_records
+        duplicate_records,
+        financial_impact
     ):
 
-        causes = []
+        analysis = []
 
         if len(missing_records) > 0:
-            causes.append("Missing transactions detected.")
+
+            analysis.append(
+                f"""
+Cause 1:
+{len(missing_records)} transactions are missing from dashboard data.
+
+Affected Invoice IDs:
+{missing_records}
+
+Estimated Financial Impact:
+{financial_impact}
+"""
+            )
 
         if len(duplicate_records) > 0:
-            causes.append("Duplicate transactions detected.")
 
-        if len(causes) == 0:
-            causes.append("No obvious root cause detected.")
+            analysis.append(
+                f"""
+Cause 2:
+{len(duplicate_records)} duplicate transaction(s) detected.
 
-        return causes
+Affected Invoice IDs:
+{duplicate_records}
+
+Possible Reason:
+Duplicate load during ETL process or source data issue.
+"""
+            )
+
+        if len(analysis) == 0:
+
+            analysis.append(
+                """
+No obvious root cause detected.
+Further investigation is required.
+"""
+            )
+
+        return analysis
 
     def calculate_impact(
         self,
@@ -102,7 +133,7 @@ class InvestigationEngine:
     def generate_report(
         self,
         total_result,
-        causes,
+        root_cause_analysis,
         impact,
         financial_impact,
         confidence
@@ -122,18 +153,19 @@ Duplicate Count      : {impact['duplicate_count']}
 
 Financial Impact     : {financial_impact}
 
-Root Causes:
+Detailed Root Cause Analysis:
 """
 
-        for cause in causes:
-            report += f"\n- {cause}"
+        for item in root_cause_analysis:
+            report += f"\n{item}\n"
 
         report += f"""
 
 Confidence Score     : {confidence}%
 
 Recommendation:
-Review missing invoices and duplicate transactions.
+Review missing invoices, duplicate records,
+ETL processes and source data quality.
 
 ====================================
 """

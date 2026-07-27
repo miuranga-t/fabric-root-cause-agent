@@ -28,40 +28,16 @@ result = engine.compare_totals(
     source_total=source_sales
 )
 
-print(result)
-
 # Missing Records
 missing = engine.detect_missing_records(
     dashboard_records,
     source_records
 )
 
-print("Missing:", missing)
-
 # Duplicate Records
 duplicates = engine.detect_duplicates(
     dashboard_records
 )
-
-print("Duplicates:", duplicates)
-
-# Root Cause Analysis
-causes = engine.analyze_root_cause(
-    missing,
-    duplicates
-)
-
-print("Root Causes:")
-print(causes)
-
-# Impact Analysis
-impact = engine.calculate_impact(
-    missing,
-    duplicates
-)
-
-print("Impact Analysis:")
-print(impact)
 
 # Financial Impact
 financial_impact = engine.calculate_financial_impact(
@@ -69,8 +45,18 @@ financial_impact = engine.calculate_financial_impact(
     missing
 )
 
-print("Financial Impact:")
-print(financial_impact)
+# Root Cause Analysis
+root_cause_analysis = engine.analyze_root_cause(
+    missing,
+    duplicates,
+    financial_impact
+)
+
+# Impact Analysis
+impact = engine.calculate_impact(
+    missing,
+    duplicates
+)
 
 # Confidence Score
 confidence = engine.calculate_confidence_score(
@@ -78,13 +64,10 @@ confidence = engine.calculate_confidence_score(
     duplicates
 )
 
-print("Confidence Score:")
-print(f"{confidence}%")
-
 # Professional Investigation Report
 report = engine.generate_report(
     result,
-    causes,
+    root_cause_analysis,
     impact,
     financial_impact,
     confidence
