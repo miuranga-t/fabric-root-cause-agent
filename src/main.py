@@ -3,18 +3,29 @@ from investigation_engine import InvestigationEngine
 
 engine = InvestigationEngine()
 
-# Read CSV files
-dashboard_df = pd.read_csv("data/dashboard.csv")
-source_df = pd.read_csv("data/source.csv")
+# Read Excel files
+dashboard_df = pd.read_excel(
+    "data/dashboard.xlsx",
+    engine="openpyxl"
+)
+
+source_df = pd.read_excel(
+    "data/source.xlsx",
+    engine="openpyxl"
+)
 
 # Convert invoice_id column to lists
 dashboard_records = dashboard_df["invoice_id"].tolist()
 source_records = source_df["invoice_id"].tolist()
 
-# Compare totals
+# Sales Amount Totals
+dashboard_sales = dashboard_df["amount"].sum()
+source_sales = source_df["amount"].sum()
+
+# Compare Sales Totals
 result = engine.compare_totals(
-    dashboard_total=len(dashboard_records),
-    source_total=len(source_records)
+    dashboard_total=dashboard_sales,
+    source_total=source_sales
 )
 
 print(result)
