@@ -76,6 +76,25 @@ class InvestigationEngine:
 
         return impact
 
+    def calculate_confidence_score(
+        self,
+        missing_records,
+        duplicate_records
+    ):
+
+        score = 100
+
+        if len(missing_records) > 0:
+            score -= 5
+
+        if len(duplicate_records) > 0:
+            score -= 5
+
+        if score < 0:
+            score = 0
+
+        return score
+
     def generate_report(
         self,
         total_result,

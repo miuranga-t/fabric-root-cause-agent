@@ -52,6 +52,15 @@ impact = engine.calculate_impact(
 print("Impact Analysis:")
 print(impact)
 
+# Confidence Score
+confidence = engine.calculate_confidence_score(
+    missing,
+    duplicates
+)
+
+print("Confidence Score:")
+print(f"{confidence}%")
+
 # Investigation Report
 report = engine.generate_report(
     result,
