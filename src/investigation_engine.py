@@ -60,3 +60,28 @@ Duplicate Records :
 """
 
         return report
+
+    def analyze_root_cause(
+        self,
+        missing_records,
+        duplicate_records
+    ):
+
+        causes = []
+
+        if len(missing_records) > 0:
+            causes.append(
+                "Missing transactions detected."
+            )
+
+        if len(duplicate_records) > 0:
+            causes.append(
+                "Duplicate transactions detected."
+            )
+
+        if len(causes) == 0:
+            causes.append(
+                "No obvious root cause detected."
+            )
+
+        return causes

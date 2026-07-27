@@ -25,7 +25,16 @@ duplicates = engine.detect_duplicates(
 
 print("Duplicates:", duplicates)
 
-# Report
+# Root Cause Analysis
+causes = engine.analyze_root_cause(
+    missing,
+    duplicates
+)
+
+print("Root Causes:")
+print(causes)
+
+# Investigation Report
 report = engine.generate_report(
     result,
     missing,
