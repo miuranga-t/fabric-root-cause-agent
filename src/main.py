@@ -52,6 +52,15 @@ impact = engine.calculate_impact(
 print("Impact Analysis:")
 print(impact)
 
+# Financial Impact
+financial_impact = engine.calculate_financial_impact(
+    source_df,
+    missing
+)
+
+print("Financial Impact:")
+print(financial_impact)
+
 # Confidence Score
 confidence = engine.calculate_confidence_score(
     missing,

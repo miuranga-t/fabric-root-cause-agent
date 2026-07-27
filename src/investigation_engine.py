@@ -47,19 +47,13 @@ class InvestigationEngine:
         causes = []
 
         if len(missing_records) > 0:
-            causes.append(
-                "Missing transactions detected."
-            )
+            causes.append("Missing transactions detected.")
 
         if len(duplicate_records) > 0:
-            causes.append(
-                "Duplicate transactions detected."
-            )
+            causes.append("Duplicate transactions detected.")
 
         if len(causes) == 0:
-            causes.append(
-                "No obvious root cause detected."
-            )
+            causes.append("No obvious root cause detected.")
 
         return causes
 
@@ -94,6 +88,18 @@ class InvestigationEngine:
             score = 0
 
         return score
+
+    def calculate_financial_impact(
+        self,
+        source_df,
+        missing_records
+    ):
+
+        impact = source_df[
+            source_df["invoice_id"].isin(missing_records)
+        ]["amount"].sum()
+
+        return impact
 
     def generate_report(
         self,
