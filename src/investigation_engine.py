@@ -339,7 +339,9 @@ ETL processes, date filters and source data quality.
             level=1
         )
 
-        document.add_paragraph(report_text)
+        document.add_paragraph(
+            report_text
+        )
 
         document.save(output_path)
 

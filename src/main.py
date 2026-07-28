@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from investigation_engine import InvestigationEngine
 
@@ -7,7 +8,6 @@ print("====================================")
 print("FABRIC ROOT CAUSE AGENT")
 print("====================================")
 
-# User Input
 dashboard_file = input(
     "Enter Dashboard Excel File Path: "
 )
@@ -16,16 +16,69 @@ source_file = input(
     "Enter Source Excel File Path: "
 )
 
-# Read Excel files
-dashboard_df = pd.read_excel(
-    dashboard_file,
-    engine="openpyxl"
-)
+# File Validation
+if not os.path.exists(dashboard_file):
 
-source_df = pd.read_excel(
-    source_file,
-    engine="openpyxl"
-)
+    print()
+    print("ERROR")
+    print(
+        f"Dashboard file not found: {dashboard_file}"
+    )
+    exit()
+
+if not os.path.exists(source_file):
+
+    print()
+    print("ERROR")
+    print(
+        f"Source file not found: {source_file}"
+    )
+    exit()
+
+# Read Files
+try:
+
+    dashboard_df = pd.read_excel(
+        dashboard_file,
+        engine="openpyxl"
+    )
+
+    source_df = pd.read_excel(
+        source_file,
+        engine="openpyxl"
+    )
+
+except Exception as error:
+
+    print()
+    print("ERROR READING FILES")
+    print(error)
+    exit()
+
+# Column Validation
+required_columns = [
+    "invoice_id",
+    "amount",
+    "sale_date"
+]
+
+for column in required_columns:
+
+    if column not in dashboard_df.columns:
+
+        print()
+        print(
+            f"Dashboard file missing required column: {column}"
+        )
+        exit()
+
+    if column not in source_df.columns:
+
+        print()
+        print(
+            f"Source file missing required column: {column}"
+        )
+        exit()
 
 # Convert dates
 dashboard_df["sale_date"] = pd.to_datetime(
