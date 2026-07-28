@@ -202,7 +202,7 @@ print(report)
 output_file = engine.export_report_to_docx(
     summary,
     report,
-    "output/investigation_report.docx"
+    "output/investigation_report_v2.docx"
 )
 
 print()
