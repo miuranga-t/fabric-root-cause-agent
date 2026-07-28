@@ -3,14 +3,27 @@ from investigation_engine import InvestigationEngine
 
 engine = InvestigationEngine()
 
+print("====================================")
+print("FABRIC ROOT CAUSE AGENT")
+print("====================================")
+
+# User Input
+dashboard_file = input(
+    "Enter Dashboard Excel File Path: "
+)
+
+source_file = input(
+    "Enter Source Excel File Path: "
+)
+
 # Read Excel files
 dashboard_df = pd.read_excel(
-    "data/dashboard.xlsx",
+    dashboard_file,
     engine="openpyxl"
 )
 
 source_df = pd.read_excel(
-    "data/source.xlsx",
+    source_file,
     engine="openpyxl"
 )
 
@@ -85,7 +98,7 @@ confidence = engine.calculate_confidence_score(
     duplicates
 )
 
-# Summary
+# Investigation summary
 summary = engine.generate_summary(
     impact,
     financial_impact,
@@ -98,9 +111,20 @@ print("\n====================================")
 print("INVESTIGATION SUMMARY")
 print("====================================")
 
-print("Risk Level       :", summary["risk_level"])
-print("Financial Impact :", summary["financial_impact"])
-print("Confidence Score :", f"{summary['confidence']}%")
+print(
+    "Risk Level       :",
+    summary["risk_level"]
+)
+
+print(
+    "Financial Impact :",
+    summary["financial_impact"]
+)
+
+print(
+    "Confidence Score :",
+    f"{summary['confidence']}%"
+)
 
 print("\nKey Findings:")
 
@@ -135,6 +159,7 @@ print(output_file)
 # Refresh Validation
 print("\nREFRESH VALIDATION")
 print("-------------------")
+
 print(
     "Dashboard Last Date:",
     refresh_validation["dashboard_last_date"]
