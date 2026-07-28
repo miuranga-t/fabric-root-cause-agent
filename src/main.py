@@ -14,6 +14,15 @@ source_df = pd.read_excel(
     engine="openpyxl"
 )
 
+# Convert sale_date to datetime
+dashboard_df["sale_date"] = pd.to_datetime(
+    dashboard_df["sale_date"]
+)
+
+source_df["sale_date"] = pd.to_datetime(
+    source_df["sale_date"]
+)
+
 # Convert invoice_id column to lists
 dashboard_records = dashboard_df["invoice_id"].tolist()
 source_records = source_df["invoice_id"].tolist()
@@ -45,6 +54,12 @@ financial_impact = engine.calculate_financial_impact(
     missing
 )
 
+# Date Validation
+date_validation = engine.validate_date_range(
+    dashboard_df,
+    source_df
+)
+
 # Root Cause Analysis
 root_cause_analysis = engine.analyze_root_cause(
     missing,
@@ -70,7 +85,8 @@ report = engine.generate_report(
     root_cause_analysis,
     impact,
     financial_impact,
-    confidence
+    confidence,
+    date_validation
 )
 
 print(report)

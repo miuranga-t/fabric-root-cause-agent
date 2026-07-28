@@ -10,11 +10,7 @@ class InvestigationEngine:
             "difference": difference
         }
 
-    def detect_missing_records(
-        self,
-        dashboard_records,
-        source_records
-    ):
+    def detect_missing_records(self, dashboard_records, source_records):
 
         missing = []
 
@@ -37,6 +33,31 @@ class InvestigationEngine:
             seen.append(record)
 
         return duplicates
+
+    def validate_date_range(
+        self,
+        dashboard_df,
+        source_df
+    ):
+
+        dashboard_min = dashboard_df["sale_date"].min()
+        dashboard_max = dashboard_df["sale_date"].max()
+
+        source_min = source_df["sale_date"].min()
+        source_max = source_df["sale_date"].max()
+
+        issue = "No date range issue detected."
+
+        if dashboard_max != source_max:
+            issue = "Date range mismatch detected."
+
+        return {
+            "dashboard_start": dashboard_min,
+            "dashboard_end": dashboard_max,
+            "source_start": source_min,
+            "source_end": source_max,
+            "issue": issue
+        }
 
     def analyze_root_cause(
         self,
@@ -136,7 +157,8 @@ Further investigation is required.
         root_cause_analysis,
         impact,
         financial_impact,
-        confidence
+        confidence,
+        date_validation
     ):
 
         report = f"""
@@ -153,6 +175,17 @@ Duplicate Count      : {impact['duplicate_count']}
 
 Financial Impact     : {financial_impact}
 
+Date Validation
+
+Dashboard Range:
+{date_validation['dashboard_start']} to {date_validation['dashboard_end']}
+
+Source Range:
+{date_validation['source_start']} to {date_validation['source_end']}
+
+Issue:
+{date_validation['issue']}
+
 Detailed Root Cause Analysis:
 """
 
@@ -165,7 +198,7 @@ Confidence Score     : {confidence}%
 
 Recommendation:
 Review missing invoices, duplicate records,
-ETL processes and source data quality.
+ETL processes, date filters and source data quality.
 
 ====================================
 """
