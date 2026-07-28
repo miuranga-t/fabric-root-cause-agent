@@ -14,7 +14,7 @@ source_df = pd.read_excel(
     engine="openpyxl"
 )
 
-# Convert sale_date column to datetime
+# Convert dates
 dashboard_df["sale_date"] = pd.to_datetime(
     dashboard_df["sale_date"]
 )
@@ -23,69 +23,69 @@ source_df["sale_date"] = pd.to_datetime(
     source_df["sale_date"]
 )
 
-# Convert invoice_id column to lists
+# Convert invoice column to lists
 dashboard_records = dashboard_df["invoice_id"].tolist()
 source_records = source_df["invoice_id"].tolist()
 
-# Sales Amount Totals
+# Sales totals
 dashboard_sales = dashboard_df["amount"].sum()
 source_sales = source_df["amount"].sum()
 
-# Compare Sales Totals
+# Compare totals
 result = engine.compare_totals(
     dashboard_total=dashboard_sales,
     source_total=source_sales
 )
 
-# Missing Records
+# Missing records
 missing = engine.detect_missing_records(
     dashboard_records,
     source_records
 )
 
-# Duplicate Records
+# Duplicate records
 duplicates = engine.detect_duplicates(
     dashboard_records
 )
 
-# Financial Impact
+# Financial impact
 financial_impact = engine.calculate_financial_impact(
     source_df,
     missing
 )
 
-# Date Validation
+# Date validation
 date_validation = engine.validate_date_range(
     dashboard_df,
     source_df
 )
 
-# Refresh Validation
+# Refresh validation
 refresh_validation = engine.validate_refresh_status(
     dashboard_df,
     source_df
 )
 
-# Root Cause Analysis
+# Root cause analysis
 root_cause_analysis = engine.analyze_root_cause(
     missing,
     duplicates,
     financial_impact
 )
 
-# Impact Analysis
+# Impact analysis
 impact = engine.calculate_impact(
     missing,
     duplicates
 )
 
-# Confidence Score
+# Confidence score
 confidence = engine.calculate_confidence_score(
     missing,
     duplicates
 )
 
-# Investigation Summary
+# Summary
 summary = engine.generate_summary(
     impact,
     financial_impact,
@@ -109,7 +109,7 @@ for finding in summary["key_findings"]:
 
 print("\n====================================")
 
-# Detailed Investigation Report
+# Detailed Report
 report = engine.generate_report(
     result,
     root_cause_analysis,
@@ -121,10 +121,20 @@ report = engine.generate_report(
 
 print(report)
 
-# Refresh Validation Section
+# Export DOCX Report
+output_file = engine.export_report_to_docx(
+    summary,
+    report,
+    "output/investigation_report.docx"
+)
+
+print()
+print("DOCX Report Exported:")
+print(output_file)
+
+# Refresh Validation
 print("\nREFRESH VALIDATION")
 print("-------------------")
-
 print(
     "Dashboard Last Date:",
     refresh_validation["dashboard_last_date"]

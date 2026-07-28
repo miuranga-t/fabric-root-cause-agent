@@ -1,3 +1,6 @@
+from docx import Document
+
+
 class InvestigationEngine:
 
     def compare_totals(self, dashboard_total, source_total):
@@ -288,3 +291,56 @@ ETL processes, date filters and source data quality.
 """
 
         return report
+
+    def export_report_to_docx(
+        self,
+        summary,
+        report_text,
+        output_path
+    ):
+
+        document = Document()
+
+        document.add_heading(
+            "Fabric Root Cause Agent Report",
+            level=0
+        )
+
+        document.add_heading(
+            "Executive Summary",
+            level=1
+        )
+
+        document.add_paragraph(
+            f"Risk Level: {summary['risk_level']}"
+        )
+
+        document.add_paragraph(
+            f"Financial Impact: {summary['financial_impact']}"
+        )
+
+        document.add_paragraph(
+            f"Confidence Score: {summary['confidence']}%"
+        )
+
+        document.add_heading(
+            "Key Findings",
+            level=1
+        )
+
+        for finding in summary["key_findings"]:
+            document.add_paragraph(
+                finding,
+                style="List Bullet"
+            )
+
+        document.add_heading(
+            "Detailed Investigation Report",
+            level=1
+        )
+
+        document.add_paragraph(report_text)
+
+        document.save(output_path)
+
+        return output_path
