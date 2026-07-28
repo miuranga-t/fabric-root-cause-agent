@@ -10,7 +10,11 @@ class InvestigationEngine:
             "difference": difference
         }
 
-    def detect_missing_records(self, dashboard_records, source_records):
+    def detect_missing_records(
+        self,
+        dashboard_records,
+        source_records
+    ):
 
         missing = []
 
@@ -58,7 +62,6 @@ class InvestigationEngine:
             "source_end": source_max,
             "issue": issue
         }
-
 
     def validate_refresh_status(
         self,
@@ -174,6 +177,63 @@ Further investigation is required.
             score = 0
 
         return score
+
+    def calculate_risk_level(
+        self,
+        financial_impact
+    ):
+
+        if financial_impact > 5000:
+            return "HIGH"
+
+        elif financial_impact >= 1000:
+            return "MEDIUM"
+
+        return "LOW"
+
+    def generate_summary(
+        self,
+        impact,
+        financial_impact,
+        confidence,
+        date_validation,
+        refresh_validation
+    ):
+
+        summary = []
+
+        if impact["missing_count"] > 0:
+            summary.append(
+                f"{impact['missing_count']} missing transactions detected"
+            )
+
+        if impact["duplicate_count"] > 0:
+            summary.append(
+                f"{impact['duplicate_count']} duplicate transactions detected"
+            )
+
+        if date_validation["issue"] != \
+                "No date range issue detected.":
+            summary.append(
+                "Date range mismatch detected"
+            )
+
+        if refresh_validation["issue"] != \
+                "No refresh issue detected.":
+            summary.append(
+                "Dashboard refresh appears outdated"
+            )
+
+        return {
+            "risk_level":
+                self.calculate_risk_level(financial_impact),
+            "financial_impact":
+                financial_impact,
+            "confidence":
+                confidence,
+            "key_findings":
+                summary
+        }
 
     def generate_report(
         self,

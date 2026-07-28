@@ -14,7 +14,7 @@ source_df = pd.read_excel(
     engine="openpyxl"
 )
 
-# Convert sale_date to datetime
+# Convert sale_date column to datetime
 dashboard_df["sale_date"] = pd.to_datetime(
     dashboard_df["sale_date"]
 )
@@ -85,7 +85,31 @@ confidence = engine.calculate_confidence_score(
     duplicates
 )
 
-# Report
+# Investigation Summary
+summary = engine.generate_summary(
+    impact,
+    financial_impact,
+    confidence,
+    date_validation,
+    refresh_validation
+)
+
+print("\n====================================")
+print("INVESTIGATION SUMMARY")
+print("====================================")
+
+print("Risk Level       :", summary["risk_level"])
+print("Financial Impact :", summary["financial_impact"])
+print("Confidence Score :", f"{summary['confidence']}%")
+
+print("\nKey Findings:")
+
+for finding in summary["key_findings"]:
+    print("-", finding)
+
+print("\n====================================")
+
+# Detailed Investigation Report
 report = engine.generate_report(
     result,
     root_cause_analysis,
@@ -97,16 +121,20 @@ report = engine.generate_report(
 
 print(report)
 
+# Refresh Validation Section
 print("\nREFRESH VALIDATION")
 print("-------------------")
+
 print(
     "Dashboard Last Date:",
     refresh_validation["dashboard_last_date"]
 )
+
 print(
     "Source Last Date:",
     refresh_validation["source_last_date"]
 )
+
 print(
     "Issue:",
     refresh_validation["issue"]
