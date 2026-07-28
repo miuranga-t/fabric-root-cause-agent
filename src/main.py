@@ -60,6 +60,12 @@ date_validation = engine.validate_date_range(
     source_df
 )
 
+# Refresh Validation
+refresh_validation = engine.validate_refresh_status(
+    dashboard_df,
+    source_df
+)
+
 # Root Cause Analysis
 root_cause_analysis = engine.analyze_root_cause(
     missing,
@@ -79,7 +85,7 @@ confidence = engine.calculate_confidence_score(
     duplicates
 )
 
-# Professional Investigation Report
+# Report
 report = engine.generate_report(
     result,
     root_cause_analysis,
@@ -90,3 +96,18 @@ report = engine.generate_report(
 )
 
 print(report)
+
+print("\nREFRESH VALIDATION")
+print("-------------------")
+print(
+    "Dashboard Last Date:",
+    refresh_validation["dashboard_last_date"]
+)
+print(
+    "Source Last Date:",
+    refresh_validation["source_last_date"]
+)
+print(
+    "Issue:",
+    refresh_validation["issue"]
+)

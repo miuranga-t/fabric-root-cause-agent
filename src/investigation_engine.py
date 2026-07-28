@@ -59,6 +59,30 @@ class InvestigationEngine:
             "issue": issue
         }
 
+
+    def validate_refresh_status(
+        self,
+        dashboard_df,
+        source_df
+    ):
+
+        dashboard_last_date = dashboard_df["sale_date"].max()
+        source_last_date = source_df["sale_date"].max()
+
+        issue = "No refresh issue detected."
+
+        if dashboard_last_date < source_last_date:
+            issue = (
+                "Dashboard refresh appears outdated. "
+                "Latest source transactions are not available in dashboard."
+            )
+
+        return {
+            "dashboard_last_date": dashboard_last_date,
+            "source_last_date": source_last_date,
+            "issue": issue
+        }
+
     def analyze_root_cause(
         self,
         missing_records,
